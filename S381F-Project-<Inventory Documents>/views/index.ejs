@@ -1,0 +1,38 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="blogs content">
+    <h2><%= title %></h2>
+    <form action="/documents" method="GET">
+      <label>Document Attributes:</label>
+      <select name="Document" id="Document">
+        <option value="inventory_ID">ID</option>
+        <option value="name">Name</option>
+        <option value="manager">Manager</option>
+        <option value="type">Type</option>
+        <option value="quantity">Quantity</option>
+      </select>
+      <label for="target">Target:</label>
+      <input type="text" id="target" name="target" required>
+      <button>Search</button>
+    </form>
+
+    <% if (documents.length > 0) { %>
+      <% documents.forEach(document => { %>
+        <a class="single" href="/documents/<%= document._id %>">
+          <h3 class="title"><%= document.name %></h3>
+          <p class="snippet"><%= document.manager %></p>
+        </a>
+      <% }) %>
+    <% } else { %>
+      <p>There are no documents to display...</p>
+    <% } %>
+    
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+</body>
+</html>
