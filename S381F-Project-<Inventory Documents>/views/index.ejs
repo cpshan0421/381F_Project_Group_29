@@ -6,7 +6,7 @@
 
   <div class="blogs content">
     <h2><%= title %></h2>
-    <form action="/documents" method="GET">
+    <form action="/documents/search" method="GET">
       <label>Document Attributes:</label>
       <select name="Document" id="Document">
         <option value="inventory_ID">ID</option>
@@ -34,5 +34,7 @@
   </div>
 
   <%- include("./partials/footer.ejs") %>
+  <script>
+  </script>
 </body>
 </html>

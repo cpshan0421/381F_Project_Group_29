@@ -1,11 +1,23 @@
 const Document = require('../models/document');
 
 const doc_index = (req, res) => {
-  const document = req.params;
-  console.log(document);
   Document.find().sort({ createdAt: -1 })
     .then(result => {
-      res.render('index', { documents: result, title: 'Targeted Documents' });
+      res.render('index', { documents: result, title: 'All Documents' });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+const doc_search = (req, res) => {
+  const field = req.query.Document;
+  const target = req.query.target;
+  const searchObj = {};
+  searchObj[field] = target;
+  Document.find(searchObj).sort({ createdAt: -1 })
+    .then(result => {
+      res.render('index', { documents: result, title: 'All Documents' });
     })
     .catch(err => {
       console.log(err);
@@ -52,11 +64,33 @@ const doc_delete = (req, res) => {
     });
 }
 
+const doc_update = (req, res) => {
+  const id = req.params.id;
+  const doc = new Document(req.body);
+  console.log(doc);
+  Document.findByIdAndUpdate(id, {
+    inventory_ID: doc.inventory_ID,
+    name: doc.name,
+    manager: doc.manager,
+    type: doc.type,
+    quantity: doc.quantity,
+  })
+    .then(result => {
+      // res.json({ redirect: `/documents/${id}` });
+      res.redirect(`/documents/${id}`)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 module.exports = {
-  doc_index, 
+  doc_index,
+  doc_search, 
   doc_details, 
   doc_create_get, 
   doc_create_post, 
   doc_delete,
-  doc_login
+  doc_login,
+  doc_update,
 }

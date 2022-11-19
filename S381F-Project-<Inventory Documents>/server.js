@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const docRoutes = require('./routes/docRoutes');
+const bodyParser = require('body-parser');
 
 // express app
 const app = express();
@@ -26,6 +27,7 @@ const users = [
 // middleware & static files
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use((req, res, next) => {
   res.locals.path = req.path;
@@ -41,19 +43,6 @@ app.get('/logout', (req, res) => {
   req.session = null;
   req.authenticated = false;
   res.redirect('/documents/login');
-});
-
-app.post('/documents/login', (req, res)=>{
-  console.log("...Handling your login request");
-  users.forEach((user) => {
-  if (user.name == req.fields.username && user.password == req.fields.password) {
-      req.session.authenticated = true;
-      req.session.userid = req.fields.username;
-      console.log(req.session.userid);
-      res.status(200).redirect("/");
-      }
-  });
-  res.redirect("/");
 });
 
 // documents routes
