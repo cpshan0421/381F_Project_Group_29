@@ -2,19 +2,20 @@
 <%- include("./partials/head.ejs") %>
 
 <body>
-  <%- include("./partials/nav.ejs") %>
+  <%- include("./partials/nav1.ejs") %>
 
 <div class="create-blog content">
-  <form action="/login" method ="POST">
+  <form action="/documents/login" method ="POST">
   <h2>Login to your account</h2>
   <label for="username">Username</label>
-  <input type="text" name="username" placeholder="Click to enter" />
+  <input type="text" id="username" name="username" placeholder="Click to enter" required>
   <div class="email error"></div>
   <label for="password">Password</label>
-  <input type="password" name="password" placeholder="Click to enter"/>
+  <input type="password" id="password" name="password" placeholder="Click to enter" required>
   <div class="password error"></div>
   <button>login</button>
-</form></div>
+</form>
+</div>
 
 
 <%- include('partials/footer.ejs'); -%>

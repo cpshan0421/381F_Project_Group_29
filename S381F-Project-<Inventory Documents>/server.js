@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const session = require('cookie-session');
 const mongoose = require('mongoose');
 const docRoutes = require('./routes/docRoutes');
 const bodyParser = require('body-parser');
+
 
 // express app
 const app = express();
@@ -17,13 +19,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // register view engine
 app.set('view engine', 'ejs');
 
-//user array
-const users = [
-{name: "admin", password: "admin"},
-{name: "demo", password: "demo"},
-{name: "student", password: "student"},
-{name: "teacher", password: "teacher"}];
-
 // middleware & static files
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -34,19 +29,39 @@ app.use((req, res, next) => {
   next();
 });
 
+//Cookie
+app.use(session({
+  userid: "session",  
+  keys: ['th1s!sA5ecretK3y'],
+  //maxAge: 90 * 24 * 60 * 60 * 1000
+}));
+
+
+
+// documents routes
+app.use('/documents', docRoutes);
+
+
+//login
+app.use((req, res, next) => {
+  console.log("Checking login status");
+  if (req.path == '/documents/login' && req.method == 'POST') {
+    console.log('whitelist login post req');
+    next();
+    return;
+  }
+  if (req.session.authenticated){
+    next();
+  } 
+  else {
+      res.redirect("/documents/login");
+  }
+});
+
 // routes
 app.get('/', (req, res) => {
   res.redirect('/documents');
 });
-
-app.get('/logout', (req, res) => {
-  req.session = null;
-  req.authenticated = false;
-  res.redirect('/documents/login');
-});
-
-// documents routes
-app.use('/documents', docRoutes);
 
 // 404 page
 app.use((req, res) => {

@@ -1,4 +1,10 @@
 const Document = require('../models/document');
+//user array
+const users = [
+  {name: "admin", password: "admin"},
+  {name: "demo", password: "demo"},
+  {name: "student", password: "student"},
+  {name: "teacher", password: "teacher"}];
 
 const doc_index = (req, res) => {
   Document.find().sort({ createdAt: -1 })
@@ -38,15 +44,44 @@ const doc_details = (req, res) => {
 const doc_create_get = (req, res) => {
   res.render('create', { title: 'Create a new document' });
 }
-const doc_login = (req, res) => {
+
+const doc_login_get = (req, res) => {
   res.render('login', { title: 'Login to your account' });
+}
+
+const doc_login_post = (req, res) => {
+  const Uname = req.body.username;
+  const PW = req.body.password;
+  users.forEach((user) => {
+      if (user.name == Uname && user.password == PW) {
+        req.session.authenticated = true;
+        req.session.userid = Uname;
+        console.log(req.session.userid);
+        res.redirect('/documents/index');
+      }
+  })
+  res.redirect('/login');
+}
+
+const doc_logout = (req, res) => {
+  try {
+    console.log('Logout');
+    req.session = null;
+    req.authenticated = false;
+    res.redirect('/login');
+    console.log(req.session);
+    console.log(req.authenticated);
+  }
+  catch (e){
+    console.log(e.message);
+  };
 }
 
 const doc_create_post = (req, res) => {
   const doc = new Document(req.body);
   doc.save()
     .then(result => {
-      res.redirect('/documents');
+      res.redirect('/documents/index');
     })
     .catch(err => {
       console.log(err);
@@ -57,7 +92,7 @@ const doc_delete = (req, res) => {
   const id = req.params.id;
   Document.findByIdAndDelete(id)
     .then(result => {
-      res.json({ redirect: '/documents' });
+      res.json({ redirect: '/documents/index' });
     })
     .catch(err => {
       console.log(err);
@@ -91,6 +126,8 @@ module.exports = {
   doc_create_get, 
   doc_create_post, 
   doc_delete,
-  doc_login,
+  doc_login_get,
   doc_update,
+  doc_login_post,
+  doc_logout,
 }
