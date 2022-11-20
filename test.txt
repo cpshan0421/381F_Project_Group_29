@@ -1,1 +1,24 @@
-hello world
+test('assert - regressions from node.js testcase', function () {
+    
+      try {
+        assert.throws(function () {
+          assert.ifError(null);
+        });
+      } catch (e) {
+        threw = true;
+        assert.equal(e.message, 'Missing expected exception..');
+      }
+      assert.ok(threw);
+
+      try {
+        assert.equal(1, 2);
+      } catch (e) {
+        assert.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+      }
+
+      try {
+        assert.equal(1, 2, 'oh no');
+      } catch (e) {
+        assert.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
+      }
+    });
