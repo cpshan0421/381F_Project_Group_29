@@ -6,6 +6,7 @@
 LEE Kwok Shing, James s13106876  
 LAU TSZ KIT, Keith s13070119 
 LO Wing Lun, Patrick s13103419 
+Chong Pui Shan, Wendy s12975814
  
 ## Tech stack 
 COMPOSED OF: Node, Express, EJS 
