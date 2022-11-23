@@ -1,7 +1,7 @@
 {
-  "name": "crash-course",
+  "name": "inventory-system",
   "version": "1.0.0",
-  "description": "a node crash course",
+  "description": "Group Project of 381F",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iamshaunjp/node-crash-course.git"
+    "url": "git+https://github.com/JamesLKS/381F_Project_Group_29"
   },
-  "author": "net ninja",
+  "author": "JamesLKS",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iamshaunjp/node-crash-course/issues"
+    "url": "https://github.com/JamesLKS/381F_Project_Group_29"
   },
-  "homepage": "https://github.com/iamshaunjp/node-crash-course#readme",
+  "homepage": "https://github.com/JamesLKS/381F_Project_Group_29",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
